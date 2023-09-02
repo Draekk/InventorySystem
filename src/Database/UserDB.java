@@ -11,12 +11,20 @@ public class UserDB {
 
     private List<UserDB> userDBList;
 
-    public void createNewUser(String username, String password){
-
-
-
-
-        userDBList.add( new UserDB(username, password) );
+    public boolean createNewUser(String username, String password){
+        try {
+            for (UserDB user : userDBList) {
+                if (user.username == username) {
+                    System.out.println("Username already exist. Try again.");
+                    return false;
+                }
+            }
+            userDBList.add( new UserDB(username, password) );
+            return true;
+        } catch (Exception ex) {
+            System.out.println("An error has occurred: " + ex.getMessage());
+            return false;
+        }
     }
 
     public void showUsers(){
