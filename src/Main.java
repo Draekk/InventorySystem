@@ -20,6 +20,7 @@ public class Main {
             Menu.showTitle("Inventory system management", '=');
             activeLoop = menu.showEntryMenu();
         }
+        userDB.showUsers();
     }
 
 

@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Menu {
 
+
     /**
      * Funcion que muestra el menu inicial
      * @return true para romper ciclo del menu
@@ -12,6 +13,7 @@ public class Menu {
         try{
             Scanner sc = new Scanner(System.in);
             String selection;
+            boolean activeLoop = true;
             System.out.println("What do you want to do?");
             System.out.println("1. Login\n2. Register\n3. Exit");
             selection = sc.nextLine();
@@ -19,7 +21,7 @@ public class Menu {
             switch (Integer.parseInt(selection)){
                 case 1:
                     if(showLoginMenu()){
-                        return false;
+                        while (activeLoop) activeLoop = showMainMenu();
                     }
                     return true;
                 case 2:
@@ -87,6 +89,40 @@ public class Menu {
                 return true;
             }
             return false;
+        } catch (Exception ex){
+            System.out.println("An error has occurred: " + ex.getMessage());
+            return false;
+        }
+    } //Login region
+
+    /**
+     * Funcion que muestra el menu principal.
+     * @return true para finalizar el ciclo
+     */
+    public boolean showMainMenu(){
+        try{
+            Scanner sc = new Scanner(System.in);
+            String selection;
+            System.out.println("What do you want to do?");
+            System.out.println("1. Product Register\n2. Search Product\n3. Show Inventory\n4. Return");
+            selection = sc.nextLine();
+
+            switch (Integer.parseInt(selection)){
+                case 1:
+
+                    return true;
+                case 2:
+
+                    return true;
+
+                case 3:
+
+                    return true;
+                case 4:
+                    return false;
+                default:
+                    return false;
+            }
         } catch (Exception ex){
             System.out.println("An error has occurred: " + ex.getMessage());
             return false;
