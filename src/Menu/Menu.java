@@ -1,10 +1,13 @@
 package Menu;
 import Database.UserDB;
-
 import java.util.Scanner;
 
 public class Menu {
 
+    /**
+     * Funcion que muestra el menu inicial
+     * @return true para romper ciclo del menu
+     */
     public boolean showEntryMenu(){
         try{
             Scanner sc = new Scanner(System.in);
@@ -15,10 +18,12 @@ public class Menu {
 
             switch (Integer.parseInt(selection)){
                 case 1:
-                    return showLoginMenu();
-                case 2:
-                    System.out.println("Register Screen");
+                    if(showLoginMenu()){
+                        return false;
+                    }
                     return true;
+                case 2:
+                    return showRegisterMenu();
                 case 3:
                     System.out.println("Exit");
                     return false;
@@ -32,6 +37,10 @@ public class Menu {
         }
     }
 
+    /**
+     * Funcion que muestra el proceso de Login
+     * @return true si el proceso se completo correctamente.
+     */
     public boolean showLoginMenu(){
         try{
             Scanner sc = new Scanner(System.in);
@@ -51,6 +60,35 @@ public class Menu {
             return false;
         } catch(Exception ex){
             System.out.println("An error has occurred: " + ex.getMessage() + "\n" + ex.getCause());
+            return false;
+        }
+    }
+
+    /**
+     * Funcion que muestra el proceso de creacion de usuario
+     * @return true para salir del ciclo
+     */
+    public boolean showRegisterMenu(){
+        try{
+            UserDB userDB = new UserDB();
+            Scanner sc = new Scanner(System.in);
+
+            showTitle("Register", '-');
+            System.out.println("Please, complete the fields.");
+            System.out.println("Name:");
+            String entryName = sc.nextLine();
+            System.out.println("Username:");
+            String entryUsername = sc.nextLine();
+            System.out.println("Password:");
+            String entryPassword = sc.nextLine();
+
+            if(userDB.createNewUser(entryName, entryUsername, entryPassword)){
+                System.out.println("User created successfully");
+                return true;
+            }
+            return false;
+        } catch (Exception ex){
+            System.out.println("An error has occurred: " + ex.getMessage());
             return false;
         }
     }

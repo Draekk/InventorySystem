@@ -11,8 +11,9 @@ public class Main {
         Menu menu = new Menu();
         boolean activeLoop = true;
 
+        //Creando usuario admin
         UserDB.userDBList = new ArrayList<>();
-        userDB.createNewUser("Drakkseid", "THEHELl9000.");
+        userDB.createNewUser("Gever", "Admin", "1234");
 
         //Bucle para iterar el menu inicial
         while (activeLoop){
