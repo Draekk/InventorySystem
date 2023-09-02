@@ -1,41 +1,25 @@
 import Database.UserDB;
-import Menu.EntryMenu;
+import Menu.Menu;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
 
         UserDB userDB = new UserDB();
-        EntryMenu entryMenu = new EntryMenu();
+        Menu menu = new Menu();
         boolean activeLoop = true;
+
+        UserDB.userDBList = new ArrayList<>();
+        userDB.createNewUser("Drakkseid", "THEHELl9000.");
 
         //Bucle para iterar el menu inicial
         while (activeLoop){
-            showTitle("Inventory system management", '=');
-            activeLoop = entryMenu.showMenu();
+            Menu.showTitle("Inventory system management", '=');
+            activeLoop = menu.showEntryMenu();
         }
     }
 
-    /**
-     * Funcion para generar un titulo y decorarlo
-     * @param title Titulo a mostrar.
-     * @param border Caracter que evuelve al titulo.
-     */
-    public static void showTitle(String title, char border){
-        int titleLength = Math.round(Math.round(title.length() * 1.5));
-        String borderTitle = "";
-        int align = ((titleLength - title.length()) / 2);
-        String spaces = "";
 
-        for(int i = 0; i <= titleLength; i++){
-            borderTitle += border;
-            if(i == titleLength){
-                for (int j = 0; j < align; j++) {
-                    spaces += " ";
-                }
-            }
-        }
-        System.out.println("\n" + borderTitle);
-        System.out.println("|" + spaces + title + spaces + "|");
-        System.out.println(borderTitle + "\n");
-    }
 }
