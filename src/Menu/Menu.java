@@ -121,6 +121,7 @@ public class Menu {
                 case 4:
                     return false;
                 default:
+                    System.out.println("Select a valid option.");
                     return false;
             }
         } catch (Exception ex){
