@@ -93,14 +93,35 @@ public class Menu {
             System.out.println("Cost price:");
             float entryCostPrice = op.toFloat(sc.nextLine());
 
-            return (pdb.createProduct(
-                    new ProductDB(
-                            entryBarCode,
-                            entryName,
-                            entryQuantity,
-                            entryCostPrice
-                    )
-            ));
+            if(yesNoQuestion("Create product?")) return (pdb.createProduct(
+                                                            new ProductDB(
+                                                                    entryBarCode,
+                                                                    entryName,
+                                                                    entryQuantity,
+                                                                    entryCostPrice
+                                                            )));
+            else return false;
+        } catch(Exception ex){
+            System.out.println("An error has occurred: " + ex.getMessage());
+            return false;
+        }
+    }
+
+
+    public boolean showProductSearchInterface(){
+        try{
+            Scanner sc = new Scanner(System.in);
+            ProductDB pdb = new ProductDB();
+
+            showTitle("Search Product", '-');
+            System.out.println("Barcode:");
+            String entryBarCode = sc.nextLine();
+            ProductDB product = pdb.searchProduct(entryBarCode);
+            if(product != null){
+                System.out.println(product);
+                return true;
+            }
+            return false;
         } catch(Exception ex){
             System.out.println("An error has occurred: " + ex.getMessage());
             return false;
@@ -115,6 +136,7 @@ public class Menu {
      */
     public boolean showEntryMenu(){
         try{
+            Operators op = new Operators();
             Scanner sc = new Scanner(System.in);
             String selection;
             boolean activeLoop = true;
@@ -122,7 +144,7 @@ public class Menu {
             System.out.println("1. Login\n2. Register\n3. Exit");
             selection = sc.nextLine();
 
-            switch (Integer.parseInt(selection)){
+            switch (op.toInt(selection)){
                 case 1:
                     if(showLoginMenu()){
                         while (activeLoop) activeLoop = showMainMenu();
@@ -149,21 +171,26 @@ public class Menu {
      */
     public boolean showMainMenu(){
         try{
+            Operators op = new Operators();
             Scanner sc = new Scanner(System.in);
             String selection;
             System.out.println("What do you want to do?");
             System.out.println("1. Product Register\n2. Search Product\n3. Show Inventory\n4. Return");
             selection = sc.nextLine();
 
-            switch (Integer.parseInt(selection)){
+            switch (op.toInt(selection)){
                 case 1:
                     while (true){
-                        if(showProductRegisterInterface() && !yesNoQuestion("Do you want to register another product? yes/no")) break;
+                        showProductRegisterInterface();
+                        if(!yesNoQuestion("Do you want to register another product?")) break;
                     }
-                case 2:
-
                     return true;
-
+                case 2:
+                    while (true){
+                        showProductSearchInterface();
+                        if(!yesNoQuestion("Do you want to search another product?")) break;
+                    }
+                    return true;
                 case 3:
 
                     return true;
@@ -212,7 +239,7 @@ public class Menu {
         Scanner sc = new Scanner(System.in);
 
         while (true){
-            System.out.println(question);
+            System.out.println(question + " yes/no");
             String response = sc.nextLine();
 
             switch(response) {
