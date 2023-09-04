@@ -1,43 +1,13 @@
 package Menu;
+import Operators.Operators;
+import Database.ProductDB;
 import Database.UserDB;
 import java.util.Scanner;
 
 public class Menu {
 
 
-    /**
-     * Funcion que muestra el menu inicial
-     * @return true para romper ciclo del menu
-     */
-    public boolean showEntryMenu(){
-        try{
-            Scanner sc = new Scanner(System.in);
-            String selection;
-            boolean activeLoop = true;
-            System.out.println("What do you want to do?");
-            System.out.println("1. Login\n2. Register\n3. Exit");
-            selection = sc.nextLine();
-
-            switch (Integer.parseInt(selection)){
-                case 1:
-                    if(showLoginMenu()){
-                        while (activeLoop) activeLoop = showMainMenu();
-                    }
-                    return true;
-                case 2:
-                    return showRegisterMenu();
-                case 3:
-                    System.out.println("Exit");
-                    return false;
-                default:
-                    System.out.println("Select a valid option");
-                    return true;
-            }
-        } catch (Exception ex) {
-            System.out.println("An error has occurred: " + ex.getMessage() + ex.getCause());
-            return true;
-        }
-    }
+    //Login / Register
 
     /**
      * Funcion que muestra el proceso de Login
@@ -93,7 +63,85 @@ public class Menu {
             System.out.println("An error has occurred: " + ex.getMessage());
             return false;
         }
-    } //Login region
+    }
+
+    //Products
+
+    /**
+     * Funcion que muestra el proceso de crear productos
+     * @return true si el proceso se completo correctamente.
+     */
+    public boolean showProductRegisterInterface(){
+        try{
+            ProductDB pdb = new ProductDB();
+            Scanner sc = new Scanner(System.in);
+            Operators op = new Operators();
+
+            showTitle("Register Product", '-');
+            System.out.println("Please, complete the fields.");
+
+            System.out.println("Barcode:");
+            String entryBarCode = sc.nextLine();
+
+            System.out.println("Name:");
+            String entryName = sc.nextLine();
+
+            System.out.println("Quantity:");
+            int entryQuantity;
+            entryQuantity = op.toInt(sc.nextLine());
+
+            System.out.println("Cost price:");
+            float entryCostPrice = op.toFloat(sc.nextLine());
+
+            return (pdb.createProduct(
+                    new ProductDB(
+                            entryBarCode,
+                            entryName,
+                            entryQuantity,
+                            entryCostPrice
+                    )
+            ));
+        } catch(Exception ex){
+            System.out.println("An error has occurred: " + ex.getMessage());
+            return false;
+        }
+    }
+
+    //Menus
+
+    /**
+     * Funcion que muestra el menu inicial
+     * @return true para romper ciclo del menu
+     */
+    public boolean showEntryMenu(){
+        try{
+            Scanner sc = new Scanner(System.in);
+            String selection;
+            boolean activeLoop = true;
+            System.out.println("What do you want to do?");
+            System.out.println("1. Login\n2. Register\n3. Exit");
+            selection = sc.nextLine();
+
+            switch (Integer.parseInt(selection)){
+                case 1:
+                    if(showLoginMenu()){
+                        while (activeLoop) activeLoop = showMainMenu();
+                    }
+                    return true;
+                case 2:
+                    return showRegisterMenu();
+                case 3:
+                    System.out.println("Exit");
+                    return false;
+                default:
+                    System.out.println("Select a valid option");
+                    return true;
+            }
+        } catch (Exception ex) {
+            System.out.println("An error has occurred: " + ex.getMessage() + ex.getCause());
+            return true;
+        }
+    }
 
     /**
      * Funcion que muestra el menu principal.
@@ -109,8 +157,9 @@ public class Menu {
 
             switch (Integer.parseInt(selection)){
                 case 1:
-
-                    return true;
+                    while (true){
+                        if(showProductRegisterInterface() && !yesNoQuestion("Do you want to register another product? yes/no")) break;
+                    }
                 case 2:
 
                     return true;
@@ -152,6 +201,29 @@ public class Menu {
         System.out.println("\n" + borderTitle);
         System.out.println("|" + spaces + title + spaces + "|");
         System.out.println(borderTitle + "\n");
+    }
+
+    /**
+     * Funcion para generar preguntas de YES o NO
+     * @param question pregunta a generar
+     * @return true si es YES o false si es NO
+     */
+    public static boolean yesNoQuestion(String question){
+        Scanner sc = new Scanner(System.in);
+
+        while (true){
+            System.out.println(question);
+            String response = sc.nextLine();
+
+            switch(response) {
+                case "yes":
+                    return true;
+                case "no":
+                    return false;
+                default:
+                    break;
+            }
+        }
     }
 
 }

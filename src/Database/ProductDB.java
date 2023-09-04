@@ -36,13 +36,7 @@ public class ProductDB {
     public boolean createProduct(ProductDB productToInsert){
         try{
             if(!products.isEmpty()){
-                /*for (ProductDB product : products) {
-                    if(productToInsert.barCode.equals(product.barCode)){
-                        System.out.println("Product already exist");
-                        return false;
-                    }
-                }*/
-                if(productToInsert == searchProduct(productToInsert.barCode)){
+                if(searchProduct(productToInsert.barCode) != null){
                     System.out.println("Product already exist");
                     return false;
                 }
@@ -65,8 +59,8 @@ public class ProductDB {
         try{
             if(!products.isEmpty()){
                 for (ProductDB product : products) {
-                    if(product.barCode == barCode){
-                        System.out.println("Product founded");
+                    if(product.barCode.equals(barCode)){
+                        //System.out.println("Product founded");
                         return product;
                     }
                 }
@@ -89,7 +83,7 @@ public class ProductDB {
                 "\nName: " + name +
                 "\nQuantity: " + quantity +
                 "\nCost Price: " + costPrice +
-                "\nSell Price: " + sellPrice;
+                "\nSell Price: " + sellPrice + "\n";
     }
 
     //Constructors
