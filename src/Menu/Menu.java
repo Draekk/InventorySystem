@@ -4,7 +4,7 @@ import Database.ProductDB;
 import Database.UserDB;
 import java.util.Scanner;
 
-public class Menu {
+public class Menu extends Operators {
 
 
     //Login / Register
@@ -75,7 +75,6 @@ public class Menu {
         try{
             ProductDB pdb = new ProductDB();
             Scanner sc = new Scanner(System.in);
-            Operators op = new Operators();
 
             showTitle("Register Product", '-');
             System.out.println("Please, complete the fields.");
@@ -88,12 +87,12 @@ public class Menu {
 
             System.out.println("Quantity:");
             int entryQuantity;
-            entryQuantity = op.toInt(sc.nextLine());
+            entryQuantity = toInt(sc.nextLine());
 
             System.out.println("Cost price:");
-            float entryCostPrice = op.toFloat(sc.nextLine());
+            float entryCostPrice = toFloat(sc.nextLine());
 
-            if(yesNoQuestion("Create product?")) return (pdb.createProduct(
+            if(okCancelQuestion("Create product?", "yes", "no")) return (pdb.createProduct(
                                                             new ProductDB(
                                                                     entryBarCode,
                                                                     entryName,
@@ -107,7 +106,10 @@ public class Menu {
         }
     }
 
-
+    /**
+     * Funcion que muestra el proceso de busqueda de producto.
+     * @return true si el proceso se completo correctamente.
+     */
     public boolean showProductSearchInterface(){
         try{
             Scanner sc = new Scanner(System.in);
@@ -128,6 +130,20 @@ public class Menu {
         }
     }
 
+    /**
+     * Funcion que muestra la lista de productos
+     */
+    public void showInventory(){
+        try{
+            Scanner sc = new Scanner(System.in);
+            ProductDB pdb = new ProductDB();
+            showTitle("Inventory", '-');
+            pdb.showProducts();
+        } catch(Exception ex){
+            System.out.println("An error has occurred: " + ex.getMessage());
+        }
+    }
+
     //Menus
 
     /**
@@ -136,7 +152,6 @@ public class Menu {
      */
     public boolean showEntryMenu(){
         try{
-            Operators op = new Operators();
             Scanner sc = new Scanner(System.in);
             String selection;
             boolean activeLoop = true;
@@ -144,7 +159,7 @@ public class Menu {
             System.out.println("1. Login\n2. Register\n3. Exit");
             selection = sc.nextLine();
 
-            switch (op.toInt(selection)){
+            switch (toInt(selection)){
                 case 1:
                     if(showLoginMenu()){
                         while (activeLoop) activeLoop = showMainMenu();
@@ -171,30 +186,38 @@ public class Menu {
      */
     public boolean showMainMenu(){
         try{
-            Operators op = new Operators();
             Scanner sc = new Scanner(System.in);
             String selection;
             System.out.println("What do you want to do?");
-            System.out.println("1. Product Register\n2. Search Product\n3. Show Inventory\n4. Return");
+            System.out.println("1. Product Register\n2. Search Product\n3. Edit Product\n 4. Delete Product\n5. Show Inventory\n6. Return");
             selection = sc.nextLine();
 
-            switch (op.toInt(selection)){
+            switch (toInt(selection)){
                 case 1:
                     while (true){
                         showProductRegisterInterface();
-                        if(!yesNoQuestion("Do you want to register another product?")) break;
+                        if(!okCancelQuestion("Do you want to register another product?", "yes", "no")) break;
                     }
                     return true;
                 case 2:
                     while (true){
                         showProductSearchInterface();
-                        if(!yesNoQuestion("Do you want to search another product?")) break;
+                        if(!okCancelQuestion("Do you want to search another product?", "yes", "no")) break;
                     }
                     return true;
                 case 3:
 
                     return true;
                 case 4:
+
+                    return true;
+                case 5:
+                    while (true){
+                        showInventory();
+                        if(okCancelQuestion("Do you want to go back?", "ok", "cancel")) break;
+                    }
+                    return true;
+                case 6:
                     return false;
                 default:
                     System.out.println("Select a valid option.");
@@ -231,25 +254,23 @@ public class Menu {
     }
 
     /**
-     * Funcion para generar preguntas de YES o NO
-     * @param question pregunta a generar
-     * @return true si es YES o false si es NO
+     * Funcion que genera preguntas positiva/negativa
+     * @param question Pegunta a generar
+     * @param positiveResponse respuesta positiva (example: yes, ok, true)
+     * @param negativeResponse respuesta negativa (example: no, cancel, false)
+     * @return true para respuesta positiva y false para respuesta negativa
      */
-    public static boolean yesNoQuestion(String question){
+    public static boolean okCancelQuestion(String question, String positiveResponse, String negativeResponse){
         Scanner sc = new Scanner(System.in);
 
         while (true){
-            System.out.println(question + " yes/no");
+            System.out.println(question + " " + positiveResponse + "/" + negativeResponse);
             String response = sc.nextLine();
 
-            switch(response) {
-                case "yes":
-                    return true;
-                case "no":
-                    return false;
-                default:
-                    break;
-            }
+            if(response.equals(positiveResponse))
+                return true;
+            else if (response.equals(negativeResponse))
+                return false;
         }
     }
 

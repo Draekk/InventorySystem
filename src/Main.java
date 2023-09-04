@@ -17,6 +17,9 @@ public class Main {
 
         //Inicializando lista de productos
         ProductDB.products = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            pdb.createProduct( new ProductDB( "" + (i + 1) * 10, "Product " + (i + 1), (i +1) * 12, (i +1) * 325));
+        }
 
         //Bucle para iterar el menu inicial
         while (activeLoop){
