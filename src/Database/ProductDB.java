@@ -1,4 +1,5 @@
 package Database;
+
 import java.util.UUID;
 import java.util.ArrayList;
 
@@ -81,6 +82,25 @@ public class ProductDB {
             return true;
         } catch(Exception ex){
             System.out.println("An error has occurred: " + ex.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Funcion para borrar un producto
+     * @param product Producto a borrar
+     * @return True si el producto fue borrado correctamente
+     */
+    public boolean deleteProduct(ProductDB product){
+        try{
+            if(!products.isEmpty()){
+                products.remove(product);
+                return true;
+            }
+            System.out.println("The product list is empty");
+            return false;
+        } catch (Exception ex) {
+            System.out.printf("An error has occurred: %s", ex.getMessage());
             return false;
         }
     }

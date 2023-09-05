@@ -144,6 +144,10 @@ public class Menu extends Operators {
         }
     }
 
+    /**
+     * Funcion que muestra la interfaz de editar producto
+     * @return true si el proceso se completo correctamente
+     */
     public boolean showEditProductInterface(){
         try{
             Scanner sc = new Scanner(System.in);
@@ -221,6 +225,36 @@ public class Menu extends Operators {
         }
     }
 
+    /**
+     * Funcion que muestra la interfaz de borrar producto
+     * @return true si el proceso se completo correctamente
+     */
+    public boolean showDeleteProductInterface(){
+        try {
+            Scanner sc = new Scanner(System.in);
+            ProductDB pdb = new ProductDB();
+
+            showTitle("Delete Product", '-');
+            System.out.println("Barcode:");
+            String entryBarCode = sc.nextLine();
+            ProductDB product = pdb.searchProduct(entryBarCode);
+
+            if(product != null){
+                System.out.println(product);
+                if(okCancelQuestion("Are you sure you want to delete this product?", "yes", "no")){
+                    if(pdb.deleteProduct(product)){
+                        System.out.println("Product deleted successfully");
+                        return true;
+                    }
+                }
+            }
+            return false;
+        } catch(Exception ex){
+            System.out.println("An error has occurred: " + ex.getMessage());
+            return false;
+        }
+    }
+
     //Menus
 
     /**
@@ -274,13 +308,15 @@ public class Menu extends Operators {
                 case 1:
                     while (true){
                         showProductRegisterInterface();
-                        if(!okCancelQuestion("Do you want to register another product?", "yes", "no")) break;
+                        if(!okCancelQuestion("Do you want to register another product?", "yes", "no"))
+                            break;
                     }
                     return true;
                 case 2:
                     while (true){
                         showProductSearchInterface();
-                        if(!okCancelQuestion("Do you want to search another product?", "yes", "no")) break;
+                        if(!okCancelQuestion("Do you want to search another product?", "yes", "no"))
+                            break;
                     }
                     return true;
                 case 3:
@@ -290,12 +326,17 @@ public class Menu extends Operators {
                     }
                     return true;
                 case 4:
-
+                    while (true){
+                        showDeleteProductInterface();
+                        if(!okCancelQuestion("Do you want to delete another product?", "yes", "no"))
+                            break;
+                    }
                     return true;
                 case 5:
                     while (true){
                         showInventory();
-                        if(okCancelQuestion("Do you want to go back?", "ok", "cancel")) break;
+                        if(okCancelQuestion("Do you want to go back?", "ok", "cancel"))
+                            break;
                     }
                     return true;
                 case 6:
