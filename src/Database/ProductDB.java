@@ -13,6 +13,41 @@ public class ProductDB {
     private float sellPrice;
     public static ArrayList<ProductDB> products;
 
+    //Getters and Setters
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public float getCostPrice() {
+        return costPrice;
+    }
+
+    public void setCostPrice(float costPrice) {
+        this.costPrice = costPrice;
+    }
+
+    public float getSellPrice() {
+        return sellPrice;
+    }
+
+    public void setSellPrice(float sellPrice) {
+        this.sellPrice = sellPrice;
+    }
+
+
     //Functions
 
     /**
@@ -74,6 +109,23 @@ public class ProductDB {
             return null;
         }
     }
+
+
+    /*public boolean editProduct(ProductDB product){
+        try{
+            for (ProductDB p: products) {
+                if(p.id == product.id){
+                    p = product;
+                    return true;
+                }
+            }
+            System.out.println("Product not found");
+            return false;
+        } catch(Exception ex){
+            System.out.println("An error has occurred: " + ex.getMessage());
+            return false;
+        }
+    }*/
 
     //Overrides
     @Override

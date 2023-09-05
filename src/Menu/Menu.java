@@ -144,6 +144,83 @@ public class Menu extends Operators {
         }
     }
 
+    public boolean showEditProductInterface(){
+        try{
+            Scanner sc = new Scanner(System.in);
+            ProductDB pdb = new ProductDB();
+
+            showTitle("Edit Product", '-');
+            System.out.println("Barcode:");
+            String entryBarCode = sc.nextLine();
+
+            ProductDB product = pdb.searchProduct(entryBarCode);
+            if(product != null){
+                showTitle("Product details", '-');
+                while (true){
+                    System.out.printf("1. Name: %s\n2. Quantity %d\n3. Cost price: %.2f\n4. Sell price: %.2f\n5. Return",
+                            product.getName(),
+                            product.getQuantity(),
+                            product.getCostPrice(),
+                            product.getSellPrice()
+                    );
+                    System.out.println("\nSelect an option to modify:");
+                    int selection = toInt(sc.nextLine());
+
+                    switch (selection){
+                        case 1:
+                            System.out.println("Old name: " + product.getName());
+                            System.out.println("New name:");
+                            String entryName = sc.nextLine();
+                            product.setName(entryName);
+                            System.out.println("The product has been modified");
+                            if(!okCancelQuestion("Keep modifying the product?", "yes", "no"))
+                                return true;
+                            else break;
+
+                        case 2:
+                            System.out.println("Old quantity: " + product.getQuantity());
+                            System.out.println("New quantity:");
+                            String entryQuantity = sc.nextLine();
+                            product.setQuantity(toInt(entryQuantity));
+                            System.out.println("The product has been modified");
+                            if(!okCancelQuestion("Keep modifying the product?", "yes", "no"))
+                                return true;
+                            else break;
+
+                        case 3:
+                            System.out.println("Old cost price: " + product.getCostPrice());
+                            System.out.println("New cost price:");
+                            String entryCostPrice = sc.nextLine();
+                            product.setCostPrice(toFloat(entryCostPrice));
+                            product.setSellPrice(toFloat(entryCostPrice) + toFloat(entryCostPrice) * 0.3f);
+                            System.out.println("The product has been modified");
+                            if(!okCancelQuestion("Keep modifying the product?", "yes", "no"))
+                                return true;
+                            else break;
+
+                        case 4:
+                            System.out.println("Old sell price: " + product.getSellPrice());
+                            System.out.println("New sell price:");
+                            String entrySellPrice = sc.nextLine();
+                            product.setSellPrice(toFloat(entrySellPrice));
+                            System.out.println("The product has been modified");
+                            if(!okCancelQuestion("Keep modifying the product?", "yes", "no"))
+                                return true;
+                            else break;
+
+                        case 5:
+                            return true;
+                    }
+                }
+
+            }
+            return true;
+        } catch(Exception ex){
+            System.out.println("An error has occurred: " + ex.getMessage());
+            return false;
+        }
+    }
+
     //Menus
 
     /**
@@ -188,8 +265,9 @@ public class Menu extends Operators {
         try{
             Scanner sc = new Scanner(System.in);
             String selection;
+            showTitle("Main menu", '*');
             System.out.println("What do you want to do?");
-            System.out.println("1. Product Register\n2. Search Product\n3. Edit Product\n 4. Delete Product\n5. Show Inventory\n6. Return");
+            System.out.println("1. Product Register\n2. Search Product\n3. Edit Product\n4. Delete Product\n5. Show Inventory\n6. Return");
             selection = sc.nextLine();
 
             switch (toInt(selection)){
@@ -206,7 +284,10 @@ public class Menu extends Operators {
                     }
                     return true;
                 case 3:
-
+                    while (true){
+                        showEditProductInterface();
+                        break;
+                    }
                     return true;
                 case 4:
 
