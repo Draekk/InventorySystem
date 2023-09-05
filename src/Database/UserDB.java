@@ -1,10 +1,11 @@
 package Database;
 
 import java.util.*;
+import  java.util.UUID;
 
 public class UserDB {
 
-    private int id = 0;
+    private UUID id;
     private String name;
     private String username;
     private String password;
@@ -77,19 +78,19 @@ public class UserDB {
 
     @Override
     public String toString() {
-        return "Username: " + username + "\nPassword: " + password + "\n";
+        return "ID : " + id + "\nName: " + name + "\nUsername: " + username + "\nPassword: " + password + "\n";
     }
 
     public UserDB(){}
 
     public UserDB(String username, String password, boolean isChecked){
-        this.id = (isChecked) ? +1 : 0;
+        if(isChecked) id = UUID.randomUUID(); else id = null;
         this.username = username;
         this.password = password;
     }
 
     public UserDB(String name, String username, String password, boolean isChecked) {
-        this.id = (isChecked) ? +1 : 0;
+        if(isChecked) id = UUID.randomUUID(); else id = null;
         this.name = name;
         this.username = username;
         this.password = password;
